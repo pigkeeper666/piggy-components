@@ -30,44 +30,47 @@ const BarChart = (props: any) => {
   const [ loading, setLoading ] = useState<any>(false)
 
   useEffect(() => {
-    request.get(targetApi)
-      .then(res => {
-        if (res?.data) {
-          const d = res.data
-          const xData = Object.keys(d)
-          const yData: any = []
-          xData.forEach(key => yData.push(d[key]))
-          setConfig({
-            grid: { top: 8, right: 8, bottom: 24, left: 36 },
-            xAxis: {
-              type: 'category',
-              data: xData,
-              splitLine: {show: isXShow},
-              axisTick: {show: isXShow},
-              axisLine: {show: isXShow},
-              axisLabel: {show: isXShow},
-            },
-            yAxis: {
-              type: 'value',
-              splitLine: {show: isYShow},
-              axisTick: {show: isYShow},
-              axisLine: {show: isYShow},
-              axisLabel: {show: isYShow}
-            },
-            series: [
-              {
-                data: yData,
-                type: 'bar',
+    if (targetApi) {
+      setLoading(true)
+      request.get(targetApi)
+        .then(res => {
+          if (res?.data) {
+            const d = res.data
+            const xData = Object.keys(d)
+            const yData: any = []
+            xData.forEach(key => yData.push(d[key]))
+            setConfig({
+              grid: { top: 8, right: 8, bottom: 24, left: 36 },
+              xAxis: {
+                type: 'category',
+                data: xData,
+                splitLine: {show: isXShow},
+                axisTick: {show: isXShow},
+                axisLine: {show: isXShow},
+                axisLabel: {show: isXShow},
               },
-            ],
-            tooltip: {
-              trigger: 'axis',
-            },
-          })
-        }
-      })
-      .catch(() => message.error('出错了'))
-      .finally(() => setLoading(false))
+              yAxis: {
+                type: 'value',
+                splitLine: {show: isYShow},
+                axisTick: {show: isYShow},
+                axisLine: {show: isYShow},
+                axisLabel: {show: isYShow}
+              },
+              series: [
+                {
+                  data: yData,
+                  type: 'bar',
+                },
+              ],
+              tooltip: {
+                trigger: 'axis',
+              },
+            })
+          }
+        })
+        .catch(() => message.error('出错了'))
+        .finally(() => setLoading(false))
+    }
   }, [targetApi, isXShow, isYShow])
 
   return (

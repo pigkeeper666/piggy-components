@@ -10,12 +10,14 @@ const Timeline = (props: any) => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    request.get(targetApi)
-      .then(res => {
-        setData(res?.data || [])
-      })
-      .catch(() => message.error('出错了'))
-      .finally(() => setLoading(false))
+    if(targetApi) {
+      request.get(targetApi)
+        .then(res => {
+          setData(res?.data || [])
+        })
+        .catch(() => message.error('出错了'))
+        .finally(() => setLoading(false))
+    }
   }, [targetApi])
 
   return (

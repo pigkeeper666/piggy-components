@@ -59,60 +59,63 @@ const GaugeChart = (props: any) => {
   const [ loading, setLoading ] = useState<any>(false)
 
   useEffect(() => {
-    request.get(targetApi)
-      .then(res => {
-        if (res?.data) {
-          const d = res.data
-          setConfig({
-            series: [{
-                type: 'gauge',
-                progress: {
-                    show: true,
-                    width: 18
-                },
-                axisLine: {
-                    lineStyle: {
+    if(targetApi) {
+        setLoading(true)
+        request.get(targetApi)
+          .then(res => {
+            if (res?.data) {
+              const d = res.data
+              setConfig({
+                series: [{
+                    type: 'gauge',
+                    progress: {
+                        show: true,
                         width: 18
-                    }
-                },
-                axisTick: {
-                    show: false
-                },
-                splitLine: {
-                    length: 15,
-                    lineStyle: {
-                        width: 2,
-                        color: '#999'
-                    }
-                },
-                axisLabel: {
-                    distance: 25,
-                    color: '#999',
-                    fontSize: axisLabelFontSize,
-                },
-                anchor: {
-                    show: true,
-                    showAbove: true,
-                    size: 16,
-                    itemStyle: {
-                        borderWidth: 10
-                    }
-                },
-                title: {
-                    show: false
-                },
-                detail: {
-                    valueAnimation: true,
-                    fontSize: detailFontSize,
-                    offsetCenter: [0, '70%']
-                },
-                data: d,
-            }]
-        })
-        }
-      })
-      .catch(() => message.error('出错了'))
-      .finally(() => setLoading(false))
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 18
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        length: 15,
+                        lineStyle: {
+                            width: 2,
+                            color: '#999'
+                        }
+                    },
+                    axisLabel: {
+                        distance: 25,
+                        color: '#999',
+                        fontSize: axisLabelFontSize,
+                    },
+                    anchor: {
+                        show: true,
+                        showAbove: true,
+                        size: 16,
+                        itemStyle: {
+                            borderWidth: 10
+                        }
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        fontSize: detailFontSize,
+                        offsetCenter: [0, '70%']
+                    },
+                    data: d,
+                }]
+            })
+            }
+          })
+          .catch(() => message.error('出错了'))
+          .finally(() => setLoading(false))
+    }
   }, [targetApi, axisLabelFontSize, detailFontSize])
 
   return (

@@ -49,46 +49,49 @@ const DoughnutChart = (props: any) => {
   const [ loading, setLoading ] = useState<any>(false)
 
   useEffect(() => {
-    request.get(targetApi)
-      .then(res => {
-        if (res?.data) {
-          const d = res.data
-          setConfig({
-            tooltip: {
-              trigger: 'item'
-            },
-            legend: {
-              top: '5%',
-              left: 'center'
-            },
-            series: [
-              {
-                // name: '访问来源',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                  show: false,
-                  position: 'center'
-                },
-                emphasis: {
+    if (targetApi) {
+      setLoading(true)
+      request.get(targetApi)
+        .then(res => {
+          if (res?.data) {
+            const d = res.data
+            setConfig({
+              tooltip: {
+                trigger: 'item'
+              },
+              legend: {
+                top: '5%',
+                left: 'center'
+              },
+              series: [
+                {
+                  // name: '访问来源',
+                  type: 'pie',
+                  radius: ['40%', '70%'],
+                  avoidLabelOverlap: false,
                   label: {
-                    show: true,
-                    fontSize: emphasisFontSize,
-                    fontWeight: 'bold'
-                  }
-                },
-                labelLine: {
-                  show: false
-                },
-                data: d,
-              }
-            ]
-          })
-        }
-      })
-      .catch(() => message.error('出错了'))
-      .finally(() => setLoading(false))
+                    show: false,
+                    position: 'center'
+                  },
+                  emphasis: {
+                    label: {
+                      show: true,
+                      fontSize: emphasisFontSize,
+                      fontWeight: 'bold'
+                    }
+                  },
+                  labelLine: {
+                    show: false
+                  },
+                  data: d,
+                }
+              ]
+            })
+          }
+        })
+        .catch(() => message.error('出错了'))
+        .finally(() => setLoading(false))
+    }
   }, [targetApi, emphasisFontSize])
 
   return (

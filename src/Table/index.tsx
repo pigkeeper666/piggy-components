@@ -80,7 +80,9 @@ const Table = (props: any) => {
 
   // 注册事件
   useEffect(() => {
-    loadData()
+    if (targetApi) {
+      loadData()
+    }
     eventEmitter.on(`${tableName}-load-data`, loadData)
     return () => {
       eventEmitter.off(`${tableName}-load-data`, loadData)

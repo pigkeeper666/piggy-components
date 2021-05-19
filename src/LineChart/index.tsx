@@ -33,48 +33,51 @@ const LineChart = (props: any) => {
   const [ loading, setLoading ] = useState<any>(false)
 
   useEffect(() => {
-    request.get(targetApi)
-      .then(res => {
-        if (res?.data) {
-          const d = res.data
-          const xData = Object.keys(d)
-          const yData: any = []
-          xData.forEach(key => yData.push(d[key]))
-          setConfig({
-            grid: { top: 8, right: 8, bottom: 24, left: 36 },
-            xAxis: {
-              type: 'category',
-              boundaryGap: false,
-              data: xData,
-              splitLine: {show: isXShow},
-              axisTick: {show: isXShow},
-              axisLine: {show: isXShow},
-              axisLabel: {show: isXShow}
-            },
-            yAxis: {
-              boundaryGap : [ '0.5', '0.5' ],
-              type: 'value',
-              splitLine: {show: isYShow},
-              axisTick: {show: isYShow},
-              axisLine: {show: isYShow},
-              axisLabel: {show: isYShow}
-            },
-            series: [
-              {
-                data: yData,
-                type: 'line',
-                smooth: isSmooth,
-                areaStyle: isFull,
+    if (targetApi) {
+      setLoading(true)
+      request.get(targetApi)
+        .then(res => {
+          if (res?.data) {
+            const d = res.data
+            const xData = Object.keys(d)
+            const yData: any = []
+            xData.forEach(key => yData.push(d[key]))
+            setConfig({
+              grid: { top: 8, right: 8, bottom: 24, left: 36 },
+              xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: xData,
+                splitLine: {show: isXShow},
+                axisTick: {show: isXShow},
+                axisLine: {show: isXShow},
+                axisLabel: {show: isXShow}
               },
-            ],
-            tooltip: {
-              trigger: 'axis',
-            },
-          })
-        }
-      })
-      .catch(() => message.error('出错了'))
-      .finally(() => setLoading(false))
+              yAxis: {
+                boundaryGap : [ '0.5', '0.5' ],
+                type: 'value',
+                splitLine: {show: isYShow},
+                axisTick: {show: isYShow},
+                axisLine: {show: isYShow},
+                axisLabel: {show: isYShow}
+              },
+              series: [
+                {
+                  data: yData,
+                  type: 'line',
+                  smooth: isSmooth,
+                  areaStyle: isFull,
+                },
+              ],
+              tooltip: {
+                trigger: 'axis',
+              },
+            })
+          }
+        })
+        .catch(() => message.error('出错了'))
+        .finally(() => setLoading(false))
+    }
   }, [targetApi, isSmooth, isFull, isXShow, isYShow])
 
   return (
